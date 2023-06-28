@@ -1,0 +1,79 @@
+from fastapi import FastAPI, Body
+import json
+
+app = FastAPI()
+
+# data
+
+note_list = [
+    {
+        "id": "note_101",
+        "title": "A Day at the Beach",
+        "body": "Today, I spent a wonderful day at the beach. The weather was perfect, and the sound of crashing waves instantly calmed my mind. I built sandcastles, took a dip in the refreshing water, and basked in the warm sun. It was a much-needed escape from the daily hustle and bustle."
+    },
+    {
+        "id": "note_102",
+        "title": "A Delicious Culinary Adventure",
+        "body": "I had an amazing food adventure today! I visited a new restaurant that specializes in fusion cuisine. From the moment I entered, the aroma of exotic spices filled the air. I tried unique dishes that combined flavors from different cultures. Each bite was a delightful explosion of tastes, and I left with a happy and satisfied tummy."
+    },
+    {
+        "id": "note_103",
+        "title": "Unexpected Act of Kindness",
+        "body": "Today, I experienced a heartwarming act of kindness. While waiting in line at the coffee shop, the person in front of me paid for my order without any hesitation. It was a small gesture, but it filled me with gratitude and reminded me of the beauty of humanity. I'll pay it forward and spread kindness too."
+    },
+    {
+        "id": "note_104",
+        "title": "A Serene Nature Walk",
+        "body": "I took a leisurely nature walk today. The rustling of leaves and the gentle chirping of birds provided a tranquil soundtrack. I strolled along winding paths, admiring colorful flowers and tall trees swaying in the breeze. Being surrounded by nature rejuvenated my spirit and brought me a sense of peace."
+    },
+    {
+        "id": "note_105",
+        "title": "Movie Marathon with Friends",
+        "body": "Spent the day with my friends watching our favorite movies. We laughed, we cried, and we relished in the magic of storytelling. Piles of snacks and cozy blankets added to the cozy atmosphere. It was a perfect day of bonding, reminiscing, and creating new memories."
+    },
+    {
+        "id": "note_106",
+        "title": "A Productive Writing Session",
+        "body": "Today, inspiration struck, and I had a highly productive writing session. Words flowed effortlessly onto the page as my characters came alive. The creative process was exhilarating, and time seemed to fly by. It's days like these that remind me why I love writing so much."
+    },
+    {
+        "id": "note_107",
+        "title": "Reconnecting with Old Friends",
+        "body": "Spent the afternoon catching up with old friends. We reminisced about shared memories, laughed at silly anecdotes, and talked about our lives now. It was amazing how effortlessly we connected, as if no time had passed. True friendships are indeed timeless."
+    },
+    {
+        "id": "note_108",
+        "title": "Dancing in the Rain",
+        "body": "Today, I let go of inhibitions and danced in the rain. The droplets soaked my clothes, and I twirled and laughed with pure joy. It was liberating to embrace the spontaneity of the moment and find happiness in the simplest of things."
+    },
+    {
+        "id": "note_109",
+        "title": "Visiting a Local Art Exhibition",
+        "body": "Explored a captivating art exhibition today. The gallery was filled with incredible paintings, sculptures, and mixed media creations. Each artwork conveyed emotions and told unique stories. It was a reminder of the power of art to inspire and evoke profound feelings."
+    }
+]
+
+# for post
+
+# {
+#     "id": "note_110",
+#     "title": "Finding Solace in Music",
+#     "body": "Music has always been my refuge, and today was no different. I spent hours lost in melodies and lyrics that resonated with my soul. The rhythm transported me to another world, and for a while, all my worries and stress faded away. Music truly is the soundtrack of my life."
+# }
+
+@app.get('/note')
+async def get_notes():
+    return note_list
+
+
+@app.get('/note/')
+async def get_note_by_id(note_id: str):
+    for note in note_list:
+        if note.get('id').casefold() == note_id.casefold():
+            return note
+        
+
+@app.post('/note')
+async def create_new_note(new_note = Body()):
+    note_list.append(new_note)
+    return {"message": "new note added"}
